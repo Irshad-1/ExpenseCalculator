@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        #container{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            width:70%;
+            margin: auto;
+        }
+        #container>div{
+            margin: auto;
+        }
+        #container >div>p:nth-child(2){
+            color:green;
+        }
+        #container >div>p:nth-child(3){
+            color:orange;
+        }
+        #container >div>p:nth-child(4){
+            color:rgb(43, 171, 221);
+            font-weight: bold;
+            font-size:20px;
+        }
+        #container >div >h1{
+            color:teal;
+        }
+        #formContainer{
+            display: flex;
+            justify-content: center;
+        }
+        #formContainer >form{
+            display: flex;
+            flex-direction: column;
+        }
+        body>h1{
+            text-align: center;
+            text-decoration: underline;
+            font-weight: bolder;
+            color:rgb(45, 45, 226);
+        }
+        #formContainer >form>select,#formContainer >form>input{
+            padding: 10px 5px 10px 5px;
+            font-size: 20px;
+            width: 400px;
+        }
+        #formContainer >form>input[type=submit]{
+            color: white;
+            background-color: rgb(34, 34, 234);
+            border-radius: 50px;
+            border: 0px;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Expense Tracker</h1>
+    <div id="formContainer">
+        <form action="">
+            <label for="month">Select Month</label>
+            <br>
+            <select name="" id="month">
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+            </select>
+            <br>
+            <label for="income">Income</label>
+            <br>
+            <input type="number"  id="income" placeholder="Enter income in Rs">
+            <br>
+            <label for="expense">Expense</label>
+            <br>
+            <input type="number"  id="expense" placeholder="Enter expense in Rs">
+            <br>
+            <input type="submit">
+        </form>
+    </div>
+    <div id="container">
+    </div>
+</body>
+<script>
+    var data=localStorage.getItem('data');
+    if(data!=null){
+        console.log("Hello");
+    JSON.parse(data).forEach(function(element){
+            console.log("Hello");
+            var card=document.createElement('div');
+            var h1=document.createElement('h1');
+            var incom=document.createElement('p');
+            var expens=document.createElement('p');
+            var savings=document.createElement('p');
+            h1.innerText=element.month;
+            incom.innerText="Your income is Rs "+element.income+"/-";
+            expens.innerText="Your expense is Rs "+element.expense+"/-";
+            savings.innerText="Your savings are Rs "+(element.income-element.expense)+"/-";
+            card.append(h1,incom,expens,savings);
+            document.querySelector('#container').append(card);
+    });
+}
+    document.querySelector('form').addEventListener('submit',myFunction);
+    var expenseData=[];
+    if(localStorage.getItem('data')!=null){
+        expenseData=JSON.parse(localStorage.getItem('data'));
+    }
+    function myFunction(){
+        event.preventDefault();
+        var expenseObj={};
+        expenseObj['month']=document.querySelector('#month').value;
+        expenseObj['income']=document.querySelector('#income').value;
+        expenseObj['expense']=document.querySelector('#expense').value;
+        // console.log(expenseObj);
+        expenseData.push(expenseObj);
+        // console.log(expenseData);
+    //     var data=localStorage.getItem('data');
+    //     if(data!=null){
+    //     data=JSON.parse(data);
+    //     console.log("local storage",data);
+    //      console.log("new data",expenseData);
+        
+    //     var newData=expenseData.concat(data);
+    //     expenseData=newData;
+    
+    //     // console.log(expenseData);
+    // }
+        localStorage.setItem('data',JSON.stringify(expenseData));
+
+            var card=document.createElement('div');
+            var h1=document.createElement('h1');
+            var incom=document.createElement('p');
+            var expens=document.createElement('p');
+            var savings=document.createElement('p');
+            h1.innerText=expenseObj.month;
+            incom.innerText="Your income is Rs "+expenseObj.income+"/-";
+            expens.innerText="Your expense is Rs "+expenseObj.expense+"/-";
+            savings.innerText="Your savings is Rs "+(expenseObj.income-expenseObj.expense)+"/-";
+            card.append(h1,incom,expens,savings);
+            document.querySelector('#container').append(card);
+        }
+    
+
+</script>
+</html>
